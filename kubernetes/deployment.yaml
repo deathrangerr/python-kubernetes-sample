@@ -1,32 +1,21 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: hello-python-service
-spec:
-  selector:
-    app: hello-python
-  ports:
-  - protocol: "TCP"
-    port: 6000
-    targetPort: 5000
-  type: LoadBalancer
-
-
----
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-python
+  name: python-deployment
+  labels:
+    app: python
 spec:
-  replicas: 4
+  replicas: 3
+  selector:
+    matchLabels:
+      app: python
   template:
     metadata:
       labels:
-        app: hello-python
+        app: python
     spec:
       containers:
-      - name: hello-python
-        image: hello-python:latest
-        imagePullPolicy: Never
+      - name: python-container
+        image: gcr.io/vocal-camera-264620/python:v1
         ports:
         - containerPort: 5000
